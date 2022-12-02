@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_printf.h                                        :+:    :+:            */
+/*   ft_printf_bonus.h                                  :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: anonymous <anonymous@student.codam.nl>       +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/26 23:51:09 by anonymous     #+#    #+#                 */
-/*   Updated: 2022/11/08 15:31:45 by faru          ########   odam.nl         */
+/*   Created: 2022/11/03 23:49:07 by anonymous     #+#    #+#                 */
+/*   Updated: 2022/11/08 15:31:48 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
+#ifndef FT_PRINTF_BONUS_H
+# define FT_PRINTF_BONUS_H 
 # include <stddef.h>
 # include <stdarg.h>
 # include <stdio.h>
@@ -21,17 +21,17 @@
 
 int		ft_printf(const char *str, ...);
 
-size_t	print_ph(va_list *ptr, char to_find);
+size_t	print_ph(va_list *ptr, char ph, char flag);
 
 int		check_char(char to_check, char *str_check);
 
 int		check_str(const char *str);
 
-size_t	print_int(int to_print);
+size_t	print_int(int to_print, char flag);
 
 size_t	print_uint(unsigned int to_print);
 
-size_t	print_hex(unsigned int to_print, int capital);
+size_t	print_hex(unsigned int to_print, int capital, char flag);
 
 size_t	print_str(char *to_print);
 

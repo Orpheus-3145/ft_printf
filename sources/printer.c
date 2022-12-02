@@ -1,26 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   print_entity.c                                     :+:    :+:            */
+/*   print_entity_bonus.c                               :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: faru <faru@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/11/03 16:47:27 by faru          #+#    #+#                 */
-/*   Updated: 2022/11/04 11:59:46 by faru          ########   odam.nl         */
+/*   Created: 2022/11/04 12:00:37 by faru          #+#    #+#                 */
+/*   Updated: 2022/11/04 15:11:21 by faru          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-size_t	print_int(int to_print)
+size_t	print_int(int to_print, char flag)
 {
 	size_t	count;
 	char	*str_int;
 
+	count = 0;
 	str_int = ft_litoa(to_print);
 	if (! str_int)
 		return (0);
-	count = ft_putstr(str_int);
+	if (flag && to_print >= 0)
+		count += ft_putchar(flag);
+	count += ft_putstr(str_int);
 	free(str_int);
 	return (count);
 }
@@ -38,7 +41,7 @@ size_t	print_uint(unsigned int to_print)
 	return (count);
 }
 
-size_t	print_hex(unsigned int to_print, int capital)
+size_t	print_hex(unsigned int to_print, int capital, char flag)
 {
 	size_t	count;
 	char	*str_hex;
@@ -47,6 +50,13 @@ size_t	print_hex(unsigned int to_print, int capital)
 	str_hex = ft_xitoa(to_print, capital);
 	if (! str_hex)
 		return (0);
+	if (flag && to_print)
+	{
+		if (capital)
+			count += ft_putstr("0X");
+		else
+			count += ft_putstr("0x");
+	}
 	count += ft_putstr(str_hex);
 	free(str_hex);
 	return (count);

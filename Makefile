@@ -10,41 +10,47 @@
 #                                                                              #
 # **************************************************************************** #
 
+SHELL := /bin/bash
+
 NAME := libftprintf.a
-DIR_LIB := include
-BASE_SRCS := ft_printf.c \
-			printer.c \
-			utils.c
-BASE_OBJS := $(BASE_SRCS:.c=.o)
-BONUS_SRCS := $(BASE_SRCS:.c=_bonus.c)
-BONUS_OBJS := $(BONUS_SRCS:.c=.o)
+SRC_DIR := sources/
+OBJ_DIR := objects/
+INCLUDE  := include/
+
+SRCS := $(wildcard $(SRC_DIR)*.c)
+OBJS := $(subst $(SRC_DIR), $(OBJ_DIR), $(SRCS:.c=.o))
+HEADER :=$(wildcard $(INCLUDE)*.h)
+
 CC  := gcc
+IFLAGS := -I $(INCLUDE)
 CFLAGS  := -Wall -Wextra -Werror
 LFLAGS  := -rcs
-IFLAGS := -I $(DIR_LIB)
-HEADER  := $(DIR_LIB)/ft_printf.h
-HEADER_BONUS  := $(DIR_LIB)/ft_printf_bonus.h
+
+GREEN = \x1b[32;01m
+RED = \x1b[31;01m
+BLUE = \x1b[34;01m
+RESET = \x1b[0m
 
 all: $(NAME)
+	@printf "$(GREEN)created archive $(NAME)$(RESET)\n"
 
-$(NAME): $(BASE_OBJS) 
-	ar $(LFLAGS) $@ $^
+$(NAME): $(OBJS) $(HEADER)
+	ar $(LFLAGS) $(NAME) $(OBJS)
 
-$(BASE_OBJS): $(BASE_SRCS) $(HEADER)
-	$(CC) $(CFLAGS) $(IFLAGS) -c $(BASE_SRCS)
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c
+	@printf "$(BLUE)"
+	$(CC) $(CFLAGS) $(IFLAGS) -c $^ -o $@
 
 clean:
-	-rm -f $(BASE_OBJS) $(BONUS_OBJS)
+	@printf "$(RED)"
+	-rm -f $(OBJS)
+	@printf "$(RESET)"
 
 fclean: clean
+	@printf "$(RED)"
 	-rm -f $(NAME)
-	
+	@printf "$(RESET)"
+
 re: fclean all
 
-bonus: $(BONUS_OBJS) 
-	ar $(LFLAGS) $(NAME) $^
-
-$(BONUS_OBJS): $(BONUS_SRCS) $(HEADER_BONUS)
-	$(CC) $(CFLAGS) $(IFLAGS) -c $(BONUS_SRCS)
-
-.PHONY: all clean fclean re bonus
+.PHONY: all clean fclean re

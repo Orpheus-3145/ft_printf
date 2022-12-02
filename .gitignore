@@ -1,4 +1,4 @@
-a.*
+objects/*
 main.*
+a.*
 *.a
-*.o
