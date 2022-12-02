@@ -13,6 +13,7 @@
 SHELL := /bin/bash
 
 NAME := libftprintf.a
+MAIN := main
 SRC_DIR := sources/
 OBJ_DIR := objects/
 INCLUDE  := include/
@@ -32,25 +33,27 @@ BLUE = \x1b[34;01m
 RESET = \x1b[0m
 
 all: $(NAME)
-	@printf "$(GREEN)created archive $(NAME)$(RESET)\n"
 
 $(NAME): $(OBJS) $(HEADER)
-	ar $(LFLAGS) $(NAME) $(OBJS)
+	@ar $(LFLAGS) $(NAME) $(OBJS)
+	@printf "$(GREEN)created archive $(NAME)$(RESET)\n"
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
-	@printf "$(BLUE)"
-	$(CC) $(CFLAGS) $(IFLAGS) -c $^ -o $@
-
+	@$(CC) $(CFLAGS) $(IFLAGS) -c $^ -o $@
+	@printf "$(BLUE)Created object file $@\n"
+	
 clean:
-	@printf "$(RED)"
-	-rm -f $(OBJS)
-	@printf "$(RESET)"
+	@-rm -f $(OBJS)
+	@printf "$(RED)Removing files $(OBJS)$(RESET)\n"
 
 fclean: clean
-	@printf "$(RED)"
-	-rm -f $(NAME)
-	@printf "$(RESET)"
+	@-rm -f $(NAME) $(MAIN).x
+	@printf "$(RED)Removing $(NAME) and $(MAIN).x (if present)$(RESET)\n"
 
 re: fclean all
 
-.PHONY: all clean fclean re
+compile: $(NAME)
+	@$(CC) $(CFLAGS) $(IFLAGS) $(MAIN).c $(NAME) -o $(MAIN).x
+	@printf "$(GREEN)created executable $(MAIN).x$(RESET)\n"
+
+.PHONY: all clean fclean re compile
